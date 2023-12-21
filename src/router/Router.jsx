@@ -1,6 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
-import MainLayout from "../app/layout/MainLayout";
 import Home from "../app/Home/Home";
+import About from "../app/About/About";
+import DashbordLayout from "../layout/DashbordLayout";
+import Dashboard from "../app/Dashboard/Dashboard";
+import MainLayout from "../layout/MainLayout";
+import Profile from "../app/Dashboard/Profile";
+import Service from "../app/service/Service";
+import Contact from "../app/contact/Contact";
+import SignIn from "../app/registert/SignIn";
+import SignUp from "../app/registert/SignUp";
 
 const Router = createBrowserRouter([
   {
@@ -11,7 +19,41 @@ const Router = createBrowserRouter([
         path: "/",
         element: <Home></Home>,
       },
+      {
+        path: "about",
+        element: <About />,
+      },
+      {
+        path: "service",
+        element: <Service />,
+      },
+      {
+        path: "contact",
+        element: <Contact />,
+      },
     ],
+  },
+  {
+    path: "dashboard",
+    element: <DashbordLayout />,
+    children: [
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+    ],
+  },
+  {
+    path: "signin",
+    element: <SignIn />,
+  },
+  {
+    path: "signup",
+    element: <SignUp />,
   },
 ]);
 
