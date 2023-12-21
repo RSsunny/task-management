@@ -1,4 +1,5 @@
 import Footer from "../../components/ui/Footer";
+import Hader from "../../components/ui/Hader";
 import useAuth from "../../hooks/useAuth";
 
 const Home = () => {
@@ -6,6 +7,7 @@ const Home = () => {
   console.log(loding);
   return (
     <div>
+      <Hader />
       <Footer />
     </div>
   );
