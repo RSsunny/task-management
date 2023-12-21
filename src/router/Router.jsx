@@ -9,6 +9,8 @@ import Service from "../app/service/Service";
 import Contact from "../app/contact/Contact";
 import SignIn from "../app/registert/SignIn";
 import SignUp from "../app/registert/SignUp";
+import ToDo from "../app/Dashboard/ToDo";
+import CreateToDo from "../app/Dashboard/CreateToDo";
 
 const Router = createBrowserRouter([
   {
@@ -42,8 +44,16 @@ const Router = createBrowserRouter([
         element: <Dashboard />,
       },
       {
+        path: "todo",
+        element: <ToDo />,
+      },
+      {
         path: "profile",
         element: <Profile />,
+      },
+      {
+        path: "createtodo",
+        element: <CreateToDo />,
       },
     ],
   },
