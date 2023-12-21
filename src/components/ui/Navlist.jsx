@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 const Navlist = () => {
   return (
-    <div className="flex justify-between items-center gap-8 ">
+    <div className="flex justify-between items-center gap-8 font-bold">
       <NavLink
         to="/"
         className={({ isActive, isPending }) =>
