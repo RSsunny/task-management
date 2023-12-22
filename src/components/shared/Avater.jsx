@@ -1,8 +1,11 @@
+import useAuth from "../../hooks/useAuth";
+
 const Avater = ({ size }) => {
+  const { user } = useAuth();
   return (
     <div className="avatar">
       <div className={`w-24 rounded-full  ${size ? size : "w-12"}`}>
-        <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+        <img src={user?.photoURL} />
       </div>
     </div>
   );

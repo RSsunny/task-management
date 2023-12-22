@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
-
-import useTodo from "../../hooks/useTodo";
 import useAuth from "../../hooks/useAuth";
+import useTodo from "../../hooks/useTodo";
+import { useLocation, useParams } from "react-router-dom";
+import useSingleTodo from "../../hooks/useSingleTodo";
 
-const CreateToDo = () => {
+const UpdateTodo = () => {
+  const { user } = useAuth();
   const [priority, setPriority] = useState("low");
   const axios = useAxiosPublic();
   const { refetch } = useTodo();
-  const { user } = useAuth();
+  const id = useParams();
+
+  const { data: singletodo, refetch: auto } = useSingleTodo(id.id);
 
   const {
     register,
@@ -29,17 +33,17 @@ const CreateToDo = () => {
       des,
       date,
       priority: getPriority,
-      email: user?.email,
+      email: "sunnysharif154@gmail.com",
       status: "incomplete",
     };
 
-    const res = await axios.post("/todo", newList);
+    const res = await axios.patch(`/todo/${id.id}`, newList);
     refetch();
     console.log(res.data);
   };
   return (
     <div>
-      <h1 className="text-3xl font-bold  capitalize">create new tasks</h1>
+      <h1 className="text-3xl font-bold  capitalize">Update tasks</h1>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -49,6 +53,7 @@ const CreateToDo = () => {
           <div className="w-full">
             <h3 className="mb-2 font-bold">Title :</h3>
             <input
+              defaultValue={singletodo?.data?.title}
               name="title"
               placeholder="inter your title"
               className="outline-none w-full border p-2"
@@ -59,6 +64,7 @@ const CreateToDo = () => {
           <div className="w-full">
             <h3 className="mb-2 font-bold">Date :</h3>
             <input
+              defaultValue={singletodo?.data?.date}
               name="date"
               type="date"
               className="outline-none w-full border p-2"
@@ -69,6 +75,7 @@ const CreateToDo = () => {
         <div className=" my-5 ">
           <h3 className="mb-2 font-bold">Description :</h3>
           <textarea
+            defaultValue={singletodo?.data?.des}
             name="des"
             placeholder="description"
             className="outline-none w-full border p-2 min-h-36"
@@ -126,4 +133,4 @@ const CreateToDo = () => {
   );
 };
 
-export default CreateToDo;
+export default UpdateTodo;
