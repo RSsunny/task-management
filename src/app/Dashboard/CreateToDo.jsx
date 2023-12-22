@@ -1,17 +1,28 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import useAuth from "../../hooks/useAuth";
+import useTodo from "../../hooks/useTodo";
+import { useLocation } from "react-router-dom";
+import useSingleTodo from "../../hooks/useSingleTodo";
 
 const CreateToDo = () => {
+  const { user } = useAuth();
   const [priority, setPriority] = useState("low");
-  console.log(priority);
+  const axios = useAxiosPublic();
+  const { refetch } = useTodo();
+  const location = useLocation();
+  console.log(location);
+  const { data: singletodo, refetch: auto } = useSingleTodo(location?.state);
 
   const {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const getPriority = priority;
     const title = data.title;
     const des = data.des;
@@ -22,8 +33,13 @@ const CreateToDo = () => {
       des,
       date,
       priority: getPriority,
+      email: user?.email,
+      status: "incomplete",
     };
-    console.log(newList);
+
+    const res = await axios.post("/todo", newList);
+    refetch();
+    console.log(res.data);
   };
   return (
     <div>
@@ -37,6 +53,7 @@ const CreateToDo = () => {
           <div className="w-full">
             <h3 className="mb-2 font-bold">Title :</h3>
             <input
+              defaultValue={singletodo?.data?.title}
               name="title"
               placeholder="inter your title"
               className="outline-none w-full border p-2"
@@ -47,6 +64,7 @@ const CreateToDo = () => {
           <div className="w-full">
             <h3 className="mb-2 font-bold">Date :</h3>
             <input
+              defaultValue={singletodo?.data?.date}
               name="date"
               type="date"
               className="outline-none w-full border p-2"
@@ -57,6 +75,7 @@ const CreateToDo = () => {
         <div className=" my-5 ">
           <h3 className="mb-2 font-bold">Description :</h3>
           <textarea
+            defaultValue={singletodo?.data?.des}
             name="des"
             placeholder="description"
             className="outline-none w-full border p-2 min-h-36"
@@ -95,12 +114,20 @@ const CreateToDo = () => {
             </div>
           </div>
         </div>
-
-        <input
-          className="border absolute bottom-10 right-5 px-6"
-          type="submit"
-          value={"Add"}
-        />
+        <div className="absolute bottom-2 lg:bottom-10 right-5 flex items-center gap-5">
+          {" "}
+          <input
+            className="border cursor-pointer  px-6"
+            type="button"
+            onClick={() => reset()}
+            value="reset"
+          />
+          <input
+            className="border cursor-pointer  px-6"
+            type="submit"
+            value={"Add"}
+          />
+        </div>
       </form>
     </div>
   );
